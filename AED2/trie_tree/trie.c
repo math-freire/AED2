@@ -1,12 +1,15 @@
 #include "trie.h"
 
-// DICA: Estude o arquivo trie.h antes de iniciar a sua implementacao!
-
 no *criarNo(void) {
-    // Dica: Aloca um no, atribua o tipo como 'I' e todos os filhos como NULL.
+    no *novo = (no*)malloc(sizeof(no));
 
-    
-    return NULL;
+    if (novo != NULL){
+        novo -> tipo = 'I';
+
+        for(int i=0; i<TAMANHO_ALFABETO; i++)
+            novo -> filho[i] = NULL;
+    }
+    return novo;
 }
 
 void apagarArvore(no *raiz) {
@@ -16,11 +19,19 @@ void apagarArvore(no *raiz) {
 }
 
 void adicionarPalavra(char *palavra, no *raiz) {
-    // IMPLEMENTAR !!!
-    // Dica 1: Use um laco iterativo de 0 ate strlen(palavra)
-    // Dica 2: Criar o no com a funcao criarNo (caso nao existir)
-    // Dica 3: Utilize a macro CHAR_TO_INDEX (ver trie.h) para converter o caractere para o indice filho
-    // Dica 4: Nao esqueca de mudar o tipo para 'P' no ultimo noh que representa o ultimo caractere
+
+    int nivel = 0, indice;
+    no *cursor = raiz;
+    
+    for(nivel; nivel < strlen(palavra); nivel++){
+        indice = CHAR_TO_INDEX(palavra[nivel]);
+        if(cursor -> filho[indice] == NULL) //caso nao tenha essa letra na arvore
+            cursor -> filho[indice] = criarNo();
+        cursor = cursor -> filho[indice];
+    }
+
+    // Chegou ao final da palavra, marcar tipo palavra 'P'
+    cursor -> tipo = 'P';
 }
 
 int buscaPalavra(char *palavra, no *raiz) {
