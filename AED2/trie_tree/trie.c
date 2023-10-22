@@ -16,10 +16,20 @@ void apagarArvore(no *raiz) {
     // IMPLEMENTAR !!!
     // Dica 1: Desaloque todos os nos filhos e depois desaloca o no atual.
     // Dica 2: Usar recursao facilita!
+
+    no *cursor = raiz;
+
+    for(int i = 0; i < TAMANHO_ALFABETO; i++){
+        if(cursor -> filho[i] != NULL)
+            apagarArvore(cursor -> filho[i]);
+        else if ((i == TAMANHO_ALFABETO - 1)) {
+            free(cursor);
+            cursor = NULL;
+        }
+    }
 }
 
 void adicionarPalavra(char *palavra, no *raiz) {
-
     int nivel = 0, indice;
     no *cursor = raiz;
     
@@ -35,34 +45,88 @@ void adicionarPalavra(char *palavra, no *raiz) {
 }
 
 int buscaPalavra(char *palavra, no *raiz) {
-    // IMPLEMENTAR !!!
-    // Dica 1: Funcao similar ao adicionarPalavra
-    // Dica 2: Se o ultimo noh que representa o ultimo caractere for do tipo 'I', a palavra nao existe
-    // IMPORTANTE:
-    //   retorne 0 se a palavra nao exite
-    //   retorne 1 se a palavra existir
+    int indice;
+    no *cursor = raiz;
+    for(int nivel = 0; nivel < strlen(palavra); nivel++){
+        indice = CHAR_TO_INDEX(palavra[nivel]);
+        if(cursor -> filho[indice] != NULL){
+            if(cursor -> filho[indice] -> tipo == 'P')
+                return 1;
+            cursor = cursor -> filho[indice];
+        }
+    }
     return 0;
 }
 
 int numeroDeNos(no *r) {
-    // IMPLEMENTAR !!!
-    // Dica: A funcao pode ser muito simples se utilizar recursao
-    return 0;
+    int count = 0;
+
+    for(int i = 0; i < TAMANHO_ALFABETO; i++)
+        if(r -> filho[i] != NULL)
+            count =+ numeroDeNos(r -> filho[i]);
+    
+    return count += 1;
 }
 
 int numeroDePalavras(no *r) {
-    // IMPLEMENTAR !!!
-    // Dica: Similar a funcao numeroDeNos, mas contabilize apenas os tipos 'P', que representa as palavras
-    return 0;
+
+    int count = 0;
+
+    for(int i = 0; i < TAMANHO_ALFABETO; i++)
+        if(r -> filho[i] != NULL)
+            count =+ numeroDeNos(r -> filho[i]);
+    
+    if(r -> tipo == 'P')
+        return count += 1;
+    else
+        return count += 0;
 }
 
 int altura(no *r) {
     // IMPLEMENTAR !!!
     // Dica: A funcao pode ser muito simples se utilizar recursao
-    return 0;
+    
+    if(r == NULL) 
+        return -1;
+
+    if(!r) 
+        return 0;
+
+    int alt = 0;
+    int alturaM = 0;
+    
+    for (int i = 0; i < TAMANHO_ALFABETO; i++) {
+        alt = altura(r->filho[i])+1;
+        if(alt > alturaM){
+            alturaM = alt;
+        }
+    }
+    return alturaM;
+}
+
+void remover_recursiva(char *palavra, no *cursor, int n, int p){
+
+    if(cursor == NULL)
+        return;
+    
+    // profundidade = tamanho da palavra entao achou a palavra
+    if(p == n)
+        cursor -> tipo = 'I';
+    else remover_recursiva(palavra, cursor -> filho[palavra[p]], n, p+1);
+
+    // verificar se esta numa palavra enquanto volta na recursao
+    if(cursor -> tipo == 'P')
+        return;
+
+    // caso seja um no intermediario, verificar se tem algum filho antes de remover
+    for(int i = 0; i < TAMANHO_ALFABETO; i++){
+        if(cursor->filho[i] != NULL)
+            return;
+    }
+        free(cursor);
+        cursor = NULL;
 }
 
 void removerPalavra(char *palavra, no *raiz) {
-    // IMPLEMENTAR !!!
-    // Nota: Esta funcao eh a mais elaborada. Recomendo criar funcoes auxiliares e utilizar recursao
+    remover_recursiva(palavra, raiz, strlen(palavra), 0);
 }
