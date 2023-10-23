@@ -13,9 +13,6 @@ no *criarNo(void) {
 }
 
 void apagarArvore(no *raiz) {
-    // IMPLEMENTAR !!!
-    // Dica 1: Desaloque todos os nos filhos e depois desaloca o no atual.
-    // Dica 2: Usar recursao facilita!
 
     no *cursor = raiz;
 
@@ -45,41 +42,46 @@ void adicionarPalavra(char *palavra, no *raiz) {
 }
 
 int buscaPalavra(char *palavra, no *raiz) {
-    int indice;
+    int i, indice;
     no *cursor = raiz;
-    for(int nivel = 0; nivel < strlen(palavra); nivel++){
-        indice = CHAR_TO_INDEX(palavra[nivel]);
-        if(cursor -> filho[indice] != NULL){
-            if(cursor -> filho[indice] -> tipo == 'P')
-                return 1;
+
+    for(i = 0; i < strlen(palavra); i++){
+        indice = CHAR_TO_INDEX(palavra[i]);
+
+        if(cursor -> filho[indice] != NULL)
             cursor = cursor -> filho[indice];
-        }
+        else 
+            break;
     }
-    return 0;
+
+    if(palavra[i] == '\0' && cursor -> tipo == 'P')
+        return 1;
+    else
+        return 0;
 }
 
 int numeroDeNos(no *r) {
-    int count = 0;
+    int count = 1;
 
     for(int i = 0; i < TAMANHO_ALFABETO; i++)
         if(r -> filho[i] != NULL)
-            count =+ numeroDeNos(r -> filho[i]);
+            count += numeroDeNos(r -> filho[i]);
     
-    return count += 1;
+    return count;
 }
 
 int numeroDePalavras(no *r) {
 
     int count = 0;
 
+    if(r -> tipo == 'P')
+        count++;
+
     for(int i = 0; i < TAMANHO_ALFABETO; i++)
         if(r -> filho[i] != NULL)
-            count =+ numeroDeNos(r -> filho[i]);
+            count += numeroDePalavras(r -> filho[i]);
     
-    if(r -> tipo == 'P')
-        return count += 1;
-    else
-        return count += 0;
+        return count;
 }
 
 int altura(no *r) {
@@ -94,7 +96,7 @@ int altura(no *r) {
 
     int alt = 0;
     int alturaM = 0;
-    
+
     for (int i = 0; i < TAMANHO_ALFABETO; i++) {
         alt = altura(r->filho[i])+1;
         if(alt > alturaM){
