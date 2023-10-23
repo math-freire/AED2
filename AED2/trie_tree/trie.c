@@ -106,29 +106,48 @@ int altura(no *r) {
     return alturaM;
 }
 
-void remover_recursiva(char *palavra, no *cursor, int n, int p){
+// Retorna 0 se o no nao tem filhos ou retorna 1 se tiver algum filho
+int temFilhos(no* raiz)
+{
+    for (int i = 0; i < TAMANHO_ALFABETO; i++)
+        if (raiz -> filho[i])
+            return 1;
+    return 0;
+}
 
-    if(cursor == NULL)
-        return;
+no* remover_recursiva(no *raiz, char *palavra, int tamanho, int profundidade){
+    // Arvore vazia
+    if (!raiz)
+        return NULL;
     
-    // profundidade = tamanho da palavra entao achou a palavra
-    if(p == n)
-        cursor -> tipo = 'I';
-    else remover_recursiva(palavra, cursor -> filho[palavra[p]], n, p+1);
+    // Se chegamos no ultimo caracter
+    if (profundidade == tamanho){
 
-    // verificar se esta numa palavra enquanto volta na recursao
-    if(cursor -> tipo == 'P')
-        return;
-
-    // caso seja um no intermediario, verificar se tem algum filho antes de remover
-    for(int i = 0; i < TAMANHO_ALFABETO; i++){
-        if(cursor->filho[i] != NULL)
-            return;
+        // Se o no for removido, o atual nao vai mais ser final de palavra
+        if(raiz -> tipo == 'P')
+            raiz -> tipo = 'I';
+        
+        // Se o no atual nao for prefixo de nenhuma palavra
+        if(temFilhos(raiz) == 0){
+            free (raiz);
+            raiz = NULL;
+        }
+    return raiz;
     }
-        free(cursor);
-        cursor = NULL;
+
+    // Se nao for o ultimo, faz recursao para o filho
+    int indice = CHAR_TO_INDEX(palavra[profundidade]);
+    raiz -> filho[indice] = remover_recursiva(raiz->filho[indice], palavra, strlen(palavra), profundidade + 1);
+
+    // Se a raiz nao tem filho (o unico foi deletado) e nao e fim de palavra
+    if(temFilhos(raiz) == 0 && raiz -> tipo == 'I'){
+        free(raiz);
+        raiz = NULL;
+    }
+
+    return raiz;
 }
 
 void removerPalavra(char *palavra, no *raiz) {
-    remover_recursiva(palavra, raiz, strlen(palavra), 0);
+    remover_recursiva(raiz, palavra, strlen(palavra), 0);
 }
