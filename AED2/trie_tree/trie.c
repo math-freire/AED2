@@ -122,7 +122,6 @@ no* remover_recursiva(no *raiz, char *palavra, int tamanho, int profundidade){
     
     // Se chegamos no ultimo caracter
     if (profundidade == tamanho){
-
         // Se o no for removido, o atual nao vai mais ser final de palavra
         if(raiz -> tipo == 'P')
             raiz -> tipo = 'I';
