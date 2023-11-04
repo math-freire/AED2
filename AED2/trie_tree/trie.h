@@ -15,7 +15,7 @@ struct trie_cel {
     char tipo; // 'I': interno / 'P': palavra
     struct trie_cel *filho[TAMANHO_ALFABETO]; // Utilizar a funcao CHAR_TO_INDEX para obter o no filho de cada letra.
 };
-typedef struct trie_cel no;
+
 
 // ATENCAO, NAO ALTERAR ESTE CODIGO !!!
 // ATENCAO, NAO ALTERAR ESTE CODIGO !!!
