@@ -62,6 +62,10 @@ bool TemCiclo( grafo* g ) {
     // DICA: Faca um laco de 0 ate g->E unindo os vertices.
     //       Caso os verticies ja pertencerem ao memso componente conexo (usar Find_Set),
     //       significa que o grafo tem um ciclo.
+
+    for(int i=0; i < g->E; i++){
+        
+    }
     Destroy_Subset(s);
     return tem_ciclo;
 }
