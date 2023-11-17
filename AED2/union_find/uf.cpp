@@ -44,12 +44,15 @@ void Union(subset subconjuntos[], int x, int y) {
     y = Find_Set(subconjuntos, y);
 
     if (subconjuntos[x].rank < subconjuntos[y].rank)
-        subconjuntos[y].pai = subconjuntos[x].pai;
-    else
-        subconjuntos[x].pai = subconjuntos[y].pai;
+        subconjuntos[x].pai = y;
 
-    if (subconjuntos[x].rank == subconjuntos[y].rank)
-        subconjuntos[y].rank++;
+    else if(subconjuntos[x].rank > subconjuntos[y].rank)
+        subconjuntos[y].pai = x;
+
+    else{
+        subconjuntos[y].pai = x;
+        subconjuntos[x].rank++;
+    }
 }
 
 // Funcao utilizada para verificar se o grafo tem ou nao ciclo
@@ -62,12 +65,6 @@ bool TemCiclo( grafo* g ) {
     // DICA: Faca um laco de 0 ate g->E unindo os vertices.
     //       Caso os verticies ja pertencerem ao memso componente conexo (usar Find_Set),
     //       significa que o grafo tem um ciclo.
-
-    for(int i=0; i < g->E; i++){
-        
-    }
-    Destroy_Subset(s);
-    return tem_ciclo;
 }
 
 int QuantidadeComponentesConexas( grafo* g ) {
