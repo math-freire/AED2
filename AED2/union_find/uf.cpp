@@ -78,11 +78,10 @@ int QuantidadeComponentesConexas( grafo* g ) {
         if (rx!=ry)
           Union(s, rx, ry);
     }
-  int nc=0;
-    // DICA: Quando o elemento i for o mesmo que o pai[i] (se representante), significa que representa um componente conexo.
-    //       Basta contar a quantidade de vertices nesta situacao...
+
+    int nc=0;
     for(int i = 0; i < g -> V; i++){
-      if(Find_Set(s, i) == i)
+        if(Find_Set(s, i) == i)
         nc++;
     }
     
@@ -92,22 +91,70 @@ int QuantidadeComponentesConexas( grafo* g ) {
 
 
 int MaiorComponenteConexa( grafo* g ) {
-    // IMPLEMENTAR !!!
-    // IMPLEMENTAR !!!
-    // IMPLEMENTAR !!!
-    // DICA: Inicio similar a funcao anterior, mas eh preciso contar quantos vertices tem cada
-    //       componente conexo para descobrir qual eh de maior quantidade.
-    //       Tente criar um vetor auxiliar (tamanho g->V), percorrer todos os vertices e
-    //       incrementar o no representante (pai) para cada vertice. Assim, basta buscar a maior contagem.
-    return 0;
+// Realiza as uniões
+    subset *s = Make_Subset(g->V);
+    for(int i=0; i<g->E; i++) {
+        int rx = Find_Set(s, g->VetorDeArestas[i].origem);
+        int ry = Find_Set(s, g->VetorDeArestas[i].destino);
+        if (rx!=ry)
+          Union(s, rx, ry);
+    }
+
+// Inicializa vetor de contagem de vértices para cada componente conexa
+    int qtd_vertices[g->V];
+    for (int i = 0; i < g->V; i++) {
+        qtd_vertices[i] = 0;
+    }
+    
+// Conta a quantidade de vértices em cada componente conexa
+    for (int i = 0; i < g->V; i++) {
+        int representante = Find_Set(s, i);
+        qtd_vertices[representante]++;
+    }
+
+// Encontra o tamanho da maior componente conexa
+    int maior = 0;
+    for (int i = 0; i < g->V; i++) {
+        if (qtd_vertices[i] > maior) {
+            maior = qtd_vertices[i];
+        }
+    }   
+
+// Libera a memória alocada para a estrutura subset
+    Destroy_Subset(s);
+
+    return maior;
 }
 
-int SomaPesoArestasDaArvoreGeradoraMinima( grafo* g ) {
-    // IMPLEMENTAR !!!
-    // IMPLEMENTAR !!!
-    // IMPLEMENTAR !!!
-    // DICA: Use o algoritmo de Kruskal (disponivel no slide):
-    //       Ordene as arestas por peso e crie um contador que soma todos os pesos
-    //       utilizados na formacao da Arvore Geradora Minima.
-    return 0;
+// Função de comparação utilizada para ordenar as arestas por peso
+int compararArestas(const void* a, const void* b) {
+    return ((aresta*)a)->peso - ((aresta*)b)->peso;
+}
+
+int SomaPesoArestasDaArvoreGeradoraMinima(grafo* g) {
+    // Ordena as arestas por peso
+    qsort(g->VetorDeArestas, g->E, sizeof(aresta), compararArestas);
+
+    // Inicializa a estrutura Union-Find
+    subset* subsets = Make_Subset(g->V);
+
+    int i = 0; // Índice para percorrer as arestas ordenadas
+    int somaPesos = 0; // Variável para armazenar a soma dos pesos
+
+    while (i < g->E) {
+        int rx = Find_Set(subsets, g->VetorDeArestas[i].origem);
+        int ry = Find_Set(subsets, g->VetorDeArestas[i].destino);
+
+        if (rx != ry) {
+            // Se a inclusão da aresta não criar um ciclo, adicione o peso à soma
+            somaPesos += g->VetorDeArestas[i].peso;
+            Union(subsets, rx, ry);
+        }
+        i++;
+    }
+
+    // Libera a memória alocada
+    free(subsets);
+
+    return somaPesos;
 }
