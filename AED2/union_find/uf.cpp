@@ -44,43 +44,48 @@ void Union(subset subconjuntos[], int x, int y) {
     y = Find_Set(subconjuntos, y);
 
     if (subconjuntos[x].rank < subconjuntos[y].rank)
-        subconjuntos[x].pai = y;
+        subconjuntos[y].pai = subconjuntos[x].pai;
+    else
+        subconjuntos[x].pai = subconjuntos[y].pai;
 
-    else if(subconjuntos[x].rank > subconjuntos[y].rank)
-        subconjuntos[y].pai = x;
-
-    else{
-        subconjuntos[y].pai = x;
-        subconjuntos[x].rank++;
-    }
+    if (subconjuntos[x].rank == subconjuntos[y].rank)
+        subconjuntos[y].rank++;
 }
 
 // Funcao utilizada para verificar se o grafo tem ou nao ciclo
 bool TemCiclo( grafo* g ) {
-    // IMPLEMENTAR !!!
-    // IMPLEMENTAR !!!
-    // IMPLEMENTAR !!!
-    bool tem_ciclo = false;
     subset *s = Make_Subset(g->V);
-    // DICA: Faca um laco de 0 ate g->E unindo os vertices.
-    //       Caso os verticies ja pertencerem ao memso componente conexo (usar Find_Set),
-    //       significa que o grafo tem um ciclo.
+
+  for (int i = 0; i < g->E; i++) {
+    int origem = g->VetorDeArestas[i].origem;
+    int destino = g->VetorDeArestas[i].destino;
+
+    int root_origem = Find_Set(s, origem);
+    int root_destino = Find_Set(s, destino);
+
+    if (root_origem == root_destino)
+        return true;  // Os vértices já estão no mesmo componente, há um ciclo
+  }
+    Destroy_Subset(s);
+    return false; // não tem ciclo
 }
 
 int QuantidadeComponentesConexas( grafo* g ) {
-    // IMPLEMENTAR !!!
-    // IMPLEMENTAR !!!
-    // IMPLEMENTAR !!!
     subset *s = Make_Subset(g->V);
     for(int i=0; i<g->E; i++) {
         int rx = Find_Set(s, g->VetorDeArestas[i].origem);
         int ry = Find_Set(s, g->VetorDeArestas[i].destino);
         if (rx!=ry)
-        	Union(s, rx, ry);
+          Union(s, rx, ry);
     }
-	int nc=0;
+  int nc=0;
     // DICA: Quando o elemento i for o mesmo que o pai[i] (se representante), significa que representa um componente conexo.
     //       Basta contar a quantidade de vertices nesta situacao...
+    for(int i = 0; i < g -> V; i++){
+      if(Find_Set(s, i) == i)
+        nc++;
+    }
+    
     Destroy_Subset(s);
     return nc;
 }
