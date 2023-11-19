@@ -33,8 +33,9 @@ void Make_Set(subset subconjuntos[], int i) {
 // Funcao que procura o representante (pai) do elemento i com compressao de caminho.
 int Find_Set(subset subconjuntos[], int i) {
 
-    if(i != subconjuntos[i].pai)
+    if(i != subconjuntos[i].pai){
         subconjuntos[i].pai = Find_Set(subconjuntos, subconjuntos[i].pai);
+    }
     return subconjuntos[i].pai;
 }
 
