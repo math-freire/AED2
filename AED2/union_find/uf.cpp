@@ -44,13 +44,14 @@ void Union(subset subconjuntos[], int x, int y) {
     x = Find_Set(subconjuntos, x);
     y = Find_Set(subconjuntos, y);
 
-    if (subconjuntos[x].rank < subconjuntos[y].rank)
-        subconjuntos[y].pai = subconjuntos[x].pai;
-    else
-        subconjuntos[x].pai = subconjuntos[y].pai;
 
-    if (subconjuntos[x].rank == subconjuntos[y].rank)
-        subconjuntos[y].rank++;
+    if (subconjuntos[x].rank > subconjuntos[y].rank)
+        subconjuntos[y].pai = x;
+    else{
+        subconjuntos[x].pai = y;
+        if(subconjuntos[x].rank == subconjuntos[y].rank)
+            subconjuntos[x].rank++;
+    }
 }
 
 // Funcao utilizada para verificar se o grafo tem ou nao ciclo
@@ -64,9 +65,14 @@ bool TemCiclo( grafo* g ) {
     int root_origem = Find_Set(s, origem);
     int root_destino = Find_Set(s, destino);
 
-    if (root_origem == root_destino)
+    if (root_origem == root_destino){
+        Destroy_Subset(s);
         return true;  // Os vértices já estão no mesmo componente, há um ciclo
+    }
+
+    Union(s, root_origem, root_destino);
   }
+  
     Destroy_Subset(s);
     return false; // não tem ciclo
 }
