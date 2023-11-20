@@ -167,32 +167,42 @@ int btAltura(bTree b) {
     return count;
 }
 
-int btContaNos(bTree b) {
-    if (!b.raiz)
+int contaNosRecursiva(btNo *no) {
+    if (!no) {
         return 0;
+    }
 
-    int count = 0;
-    btNo *cursor = b.raiz;
+    int count = 1; // Conta o nó atual
 
-    while (cursor) {
-        count += cursor->numChaves + 1; // Conta o nó atual e seus filhos
-        cursor = cursor->filhos[0];
+    if (!no->ehFolha) {
+        for (int i = 0; i <= no->numChaves; i++) {
+            count += contaNosRecursiva(no->filhos[i]); // Chama recursivamente para os filhos
+        }
+    }
+
+    return count;
+}
+
+int btContaNos(bTree b) {
+    return contaNosRecursiva(b.raiz);
+}
+
+int contaChavesRecursiva(btNo *no) {
+    if (!no) {
+        return 0;
+    }
+
+    int count = no->numChaves; // Conta as chaves no nó atual
+
+    if (!no->ehFolha) {
+        for (int i = 0; i <= no->numChaves; i++) {
+            count += contaChavesRecursiva(no->filhos[i]); // Chama recursivamente para os filhos
+        }
     }
 
     return count;
 }
 
 int btContaChaves(bTree t) {
-    if (!t.raiz)
-        return 0;
-
-    int count = 0;
-    btNo *cursor = t.raiz;
-
-    while (cursor) {
-        count += cursor->numChaves; // Conta as chaves no nó atual
-        cursor = cursor->filhos[0];
-    }
-
-    return count;
+    return contaChavesRecursiva(t.raiz);
 }
