@@ -35,6 +35,14 @@ tipoHash criar(modoHash m, int t) {
     return h;
 }
 
+void delete_linked_list(listaEncadeada *head){
+    if(!head){
+        listaEncadeada *next_node = head->proximo;
+        delete head;
+        delete_linked_list(next_node);
+    }
+}
+
 void destruir(tipoHash h) {
     switch (h.modo) {
     case semColisao:
@@ -43,12 +51,13 @@ void destruir(tipoHash h) {
         break;
 
     case encadeamento:
-        // IMPLEMENTAR!!!
-        // Dica: Nao esquecer de desalocar toda a lista ligada!
+        delete_linked_list(h.tabela.encadeada->primeiro);
+        free(h.tabela.encadeada);
         break;
 
     case aberto:
-        // IMPLEMENTAR!!!
+        free(h.tabela.aberto);
+        h.tabela.aberto = NULL;
         break;
     }
 }
