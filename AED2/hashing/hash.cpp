@@ -75,7 +75,7 @@ void inserir(tipoHash h, char c[STR_SIZE], char v[STR_SIZE]) {
     case encadeamento:
         
         // Calcular a função HASH
-        int idc = hash(c, h.tamanho);
+        idx = hash(c, h.tamanho);
 
         // Alocar a lista encadeada
         listaEncadeada *novaLista = (listaEncadeada*) malloc(sizeof(listaEncadeada));
@@ -99,12 +99,20 @@ void inserir(tipoHash h, char c[STR_SIZE], char v[STR_SIZE]) {
         break;
 
     case aberto:
-        // IMPLEMENTAR!!!
-        // DICA: Eh utilizado encadeamento aberto linear. Utilize as tentativas conforme mostrado abaixo.
+
+        // Utilizando encadeamento aberto linear com auxilio das tentativas
         for (int tentativa = 0; tentativa < h.tamanho; tentativa++) {
+
+            // Calcula o idx para a tentativa atual na tabela. Abstração: Cada calculo é um slot/caixa da tabela
             idx = hash(c, h.tamanho, tentativa);
-            // DICA: Use uma verificacao como h.tabela.aberto[idx].chave[0] == '\0' para saber se a celula esta vazia
-            // DICA: Nao esquecer de atualizar o atributo excluido
+            
+            // Verifica se a celula está vazia
+            if(h.tabela.aberto[idx].chave[0] == '\0'){
+                strcpy(h.tabela.aberto[idx].chave, c);
+                strcpy(h.tabela.aberto[idx].valor, v);
+                h.tabela.aberto[idx].excluido = false;
+                break;
+            }
         }
         break;
     }
