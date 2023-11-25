@@ -69,12 +69,33 @@ void inserir(tipoHash h, char c[STR_SIZE], char v[STR_SIZE]) {
     case semColisao:
         strcpy(h.tabela.aberto[idx].chave, c);
         strcpy(h.tabela.aberto[idx].valor, v);
+        // h.tabela.aberto[idx].excluido = false;
         break;
 
     case encadeamento:
-        // IMPLEMENTAR!!!
-        // Eh preciso alocar a estrutura listaEncadeada para cada elemento inserido.
-        // Sugiro incluir no final da lista, mas pode ser inserido em qualquer ponto.
+        
+        // Calcular a função HASH
+        int idc = hash(c, h.tamanho);
+
+        // Alocar a lista encadeada
+        listaEncadeada *novaLista = (listaEncadeada*) malloc(sizeof(listaEncadeada));
+        strcpy(novaLista->chave, c);
+        strcpy(novaLista->valor, v);
+        novaLista->proximo = NULL;
+
+        // Verificar se a lista no indice está vazia para inserir, senão percorrer até o final
+        if(h.tabela.encadeada[idx].primeiro = NULL)
+            h.tabela.encadeada[idx].primeiro = novaLista;
+        else{
+            // Não está vazia, percorrer até o final
+            listaEncadeada *atual = h.tabela.encadeada[idx].primeiro;
+            while(atual -> proximo != NULL)
+                atual = atual -> proximo;
+            
+            // Adicionar ao final da lista (após atual)
+            atual->proximo = novaLista; 
+        }
+
         break;
 
     case aberto:
