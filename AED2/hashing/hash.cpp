@@ -36,7 +36,7 @@ tipoHash criar(modoHash m, int t) {
 }
 
 void delete_linked_list(listaEncadeada *head){
-    if(!head){
+    if(head){
         listaEncadeada *next_node = head->proximo;
         delete head;
         delete_linked_list(next_node);
@@ -109,7 +109,7 @@ void inserir(tipoHash h, char c[STR_SIZE], char v[STR_SIZE]) {
             // Calcula o idx para a tentativa atual na tabela. Abstração: Cada calculo é um slot/caixa da tabela
             idx = hash(c, h.tamanho, tentativa);
             
-            // Verifica se a celula está vazia
+            // Verifica se a celula está vazia e insere
             if(h.tabela.aberto[idx].chave[0] == '\0'){
                 strcpy(h.tabela.aberto[idx].chave, c);
                 strcpy(h.tabela.aberto[idx].valor, v);
@@ -123,19 +123,31 @@ void inserir(tipoHash h, char c[STR_SIZE], char v[STR_SIZE]) {
 
 char *buscar(tipoHash h, char c[STR_SIZE]) {
     int idx = hash(c, h.tamanho);
+    listaEncadeada *atual;
+
     switch (h.modo) {
     case semColisao:
+    // Função admite que o indices são unicos na tabela, por isso não é necessário nennum tipo de looping, somente o calculo hash
         return strcmp(h.tabela.aberto[idx].chave, c) == 0 ? h.tabela.aberto[idx].valor : NULL;
 
     case encadeamento:
-        // IMPLEMENTAR!!!
         // Retornar nulo se a chave nao for encontrada!
+        idx = hash(c, h.tamanho);
+        atual = h.tabela.encadeada[idx].primeiro;
+        
+        while(atual->chave != NULL){
+            if(strcmp(atual->chave, c) == 0)
+                return atual->valor;
+            else
+                atual = atual->proximo;
+        }
         return NULL;
 
     case aberto:
         // IMPLEMENTAR!!!
         // Retornar nulo se a chave nao for encontrada!
-        return NULL;
+        idx = hash(c, h.tamanho);
+        return strcmp(h.tabela.aberto[idx].chave, c) == 0 ? h.tabela.aberto[idx].valor : NULL;
     }
 }
 
