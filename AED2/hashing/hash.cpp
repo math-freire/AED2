@@ -135,7 +135,7 @@ char *buscar(tipoHash h, char c[STR_SIZE]) {
         idx = hash(c, h.tamanho);
         atual = h.tabela.encadeada[idx].primeiro;
         
-        while(atual->chave != NULL){
+        while(atual != NULL){
             if(strcmp(atual->chave, c) == 0)
                 return atual->valor;
             else
@@ -149,10 +149,14 @@ char *buscar(tipoHash h, char c[STR_SIZE]) {
         idx = hash(c, h.tamanho);
         return strcmp(h.tabela.aberto[idx].chave, c) == 0 ? h.tabela.aberto[idx].valor : NULL;
     }
+    return NULL;
 }
 
 void apagar(tipoHash h, char c[STR_SIZE]) {
     int idx = hash(c, h.tamanho);
+    listaEncadeada *atual = NULL;
+    listaEncadeada *anterior = NULL;
+
     switch (h.modo) {
     case semColisao:
         if (strcmp(h.tabela.aberto[idx].chave, c) == 0)
@@ -160,12 +164,31 @@ void apagar(tipoHash h, char c[STR_SIZE]) {
         break;
 
     case encadeamento:
-        // IMPLEMENTAR!!!
+        idx = hash(c, h.tamanho);
+        atual = h.tabela.encadeada[idx].primeiro;
+
+        while (atual != NULL) {
+            if (strcmp(atual->chave, c) == 0) {
+                // Ajustar os ponteiros para excluir o nó atual
+                if (anterior == NULL)
+                    h.tabela.encadeada[idx].primeiro = atual->proximo;
+                else 
+                    anterior->proximo = atual->proximo;
+                free(atual);
+                
+                break;  // O nó foi excluído, sair do loop
+            } else {
+                anterior = atual;
+                atual = atual->proximo;
+            }
+        }
         break;
 
     case aberto:
-        // IMPLEMENTAR!!!
-        // DICA: Nao esquecer de atribuir true para excluido. Caso contrario, uma chave podera ser localizada.
+        if (strcmp(h.tabela.aberto[idx].chave, c) == 0){
+            h.tabela.aberto[idx].chave[0] = h.tabela.aberto[idx].valor[0] = '\0';
+            h.tabela.aberto[idx].excluido = true;
+        }
         break;
     }
 }
