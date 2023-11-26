@@ -175,7 +175,7 @@ void apagar(tipoHash h, char c[STR_SIZE]) {
                 else 
                     anterior->proximo = atual->proximo;
                 free(atual);
-                
+
                 break;  // O nó foi excluído, sair do loop
             } else {
                 anterior = atual;
@@ -195,6 +195,8 @@ void apagar(tipoHash h, char c[STR_SIZE]) {
 
 int quantidade(tipoHash h) {
     int qtd = 0;
+    listaEncadeada *atual = NULL;
+
     switch (h.modo) {
     case semColisao:
     case aberto: // Igual ao semColisao, portanto, jah implementado!!!
@@ -204,7 +206,16 @@ int quantidade(tipoHash h) {
         break;
 
     case encadeamento:
-        // IMPLEMENTAR!!!
+        
+
+        for (int i = 0; i < h.tamanho; i++){
+            atual = h.tabela.encadeada[i].primeiro;
+            
+            while(atual != NULL){
+                qtd++;
+                atual = atual->proximo;
+            }
+        }
         break;
     }
     return qtd;
