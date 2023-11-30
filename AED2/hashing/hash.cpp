@@ -82,9 +82,7 @@ void inserir(tipoHash h, char c[STR_SIZE], char v[STR_SIZE]) {
         novaLista = (listaEncadeada*) malloc(sizeof(listaEncadeada));
         strcpy(novaLista->chave, c);
         strcpy(novaLista->valor, v);
-        // novaLista->proximo = h.tabela.encadeada[idx].primeiro;
-        // h.tabela.encadeada[idx].primeiro = novaLista;
-        // break;
+        novaLista->proximo = nullptr;
 
         // Verificar se a lista no indice está vazia para inserir, senão percorrer até o final
         if(h.tabela.encadeada[idx].primeiro == NULL)
@@ -93,18 +91,13 @@ void inserir(tipoHash h, char c[STR_SIZE], char v[STR_SIZE]) {
 
             // Não está vazia, percorrer até o final
             listaEncadeada *atual = h.tabela.encadeada[idx].primeiro;
-            while(atual -> proximo != NULL){
+            while(atual -> proximo != nullptr){
                 atual = atual -> proximo;
             }
             
             // Adicionar ao final da lista (após atual)
             atual->proximo = novaLista;
-
-            // Libera o ponteiro de struct listaEncadeada usado para percorrer a lista
-            free(atual);
-            atual = NULL; 
         }
-
         break;
 
     case aberto:
@@ -123,8 +116,9 @@ void inserir(tipoHash h, char c[STR_SIZE], char v[STR_SIZE]) {
                 break;
             }
         }
-        break;
+        break; 
     }
+    
 }
 
 char *buscar(tipoHash h, char c[STR_SIZE]) {

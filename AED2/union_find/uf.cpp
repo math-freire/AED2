@@ -39,17 +39,20 @@ int Find_Set(subset subconjuntos[], int i) {
 }
 
 // Funcao que junta os conjuntos de x e y com uniao ponderada.
+// Funcao que junta os conjuntos de x e y com uniao ponderada.
 void Union(subset subconjuntos[], int x, int y) {
     x = Find_Set(subconjuntos, x);
     y = Find_Set(subconjuntos, y);
 
-
-    if (subconjuntos[x].rank > subconjuntos[y].rank)
-        subconjuntos[y].pai = x;
-    else{
-        subconjuntos[x].pai = y;
-        if(subconjuntos[x].rank == subconjuntos[y].rank)
+    if(subconjuntos[x].pai != subconjuntos[y].pai){
+        if(subconjuntos[x].rank < subconjuntos[y].rank)
+            subconjuntos[x].pai = subconjuntos[y].pai;
+        else if(subconjuntos[x].rank > subconjuntos[y].rank)
+            subconjuntos[y].pai = subconjuntos[x].pai;
+        else{
+            subconjuntos[y].pai = subconjuntos[x].pai;
             subconjuntos[x].rank++;
+        }
     }
 }
 
