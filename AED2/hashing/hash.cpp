@@ -101,24 +101,23 @@ void inserir(tipoHash h, char c[STR_SIZE], char v[STR_SIZE]) {
         break;
 
     case aberto:
-
         // Utilizando encadeamento aberto linear com auxilio das tentativas
         for (int tentativa = 0; tentativa < h.tamanho; tentativa++) {
 
             // Calcula o idx para a tentativa atual na tabela. Abstração: Cada calculo é um slot/caixa da tabela
             idx = hash(c, h.tamanho, tentativa);
             
+
             // Verifica se a celula está vazia e insere
-            if(h.tabela.aberto[idx].chave[0] == '\0'){
+            if(h.tabela.aberto[idx].chave[0] == '\0'  || h.tabela.aberto[idx].excluido){
                 strcpy(h.tabela.aberto[idx].chave, c);
                 strcpy(h.tabela.aberto[idx].valor, v);
                 h.tabela.aberto[idx].excluido = false;
                 break;
             }
         }
-        break; 
+        break;
     }
-    
 }
 
 char *buscar(tipoHash h, char c[STR_SIZE]) {
@@ -146,7 +145,6 @@ char *buscar(tipoHash h, char c[STR_SIZE]) {
     case aberto:
         // IMPLEMENTAR!!!
         // Retornar nulo se a chave nao for encontrada!
-        idx = hash(c, h.tamanho);
         return strcmp(h.tabela.aberto[idx].chave, c) == 0 ? h.tabela.aberto[idx].valor : NULL;
     }
     return NULL;
@@ -219,4 +217,42 @@ int quantidade(tipoHash h) {
         break;
     }
     return qtd;
+}
+
+#include <stdio.h>
+
+int main() {
+    // Definir o tamanho da tabela hash
+    int tamanho = 11;
+
+    // Criar uma tabela hash no modo aberto
+    tipoHash minhaHash = criar(aberto, tamanho);
+
+    // Inserir alguns pares chave-valor
+    inserir(minhaHash, "chave1", "valor1");
+    inserir(minhaHash, "chave2", "valor2");
+    inserir(minhaHash, "chave3", "valor3");
+
+    // Imprimir o estado atual da tabela hash
+    printf("Estado atual da tabela hash:\n");
+    for (int i = 0; i < tamanho; i++) {
+        if (minhaHash.tabela.aberto[i].chave[0] != '\0') {
+            printf("Slot %d: Chave: %s, Valor: %s\n", i, minhaHash.tabela.aberto[i].chave, minhaHash.tabela.aberto[i].valor);
+        }
+    }
+
+
+    char *retorno = buscar(minhaHash, "chave1");
+    printf("Retorno buscar 1: %s\n", retorno);
+
+    char *retorno2 = buscar(minhaHash, "chave2");
+    printf("Retorno buscar 2: %s\n", retorno2);
+
+    char *retorno3 = buscar(minhaHash, "chave3");
+    printf("Retorno buscar 3: %s\n", retorno3);
+
+    // Limpar a tabela hash ao final
+    destruir(minhaHash);
+
+    return 0;
 }
