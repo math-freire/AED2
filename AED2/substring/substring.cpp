@@ -1,6 +1,6 @@
-#include "substring.h"  // typedef unsigned char *bytes;
+// #include "substring.h"  // typedef unsigned char *bytes;
 
-#include "main.h"
+// #include "main.h"
 
 // Use 0 se o vetor a e b (palavra e texto) inicia em 0 (a[0..m-1] e b[0..n-1])
 //  ou 1 se o vetor a e b (palavra e texto) inicia em 1 (a[1..m]   e b[1..n])
@@ -17,31 +17,33 @@ bool verifica_ocorrencia(char *a, int m, char *b, int n, int pos_ult_carac) {
     // criar um laço para o texto e se acertar a primeira letra criar um laço para a palavra
     // verificar se o texto não acabou***
 
-    if (n) {  // se o texto existe
+    if (n > 0) {  // se o texto existe
         // percorre o texto
-        for (b[inicia_em]; b[n - 1]; b[inicia_em++]) {
+        for (inicia_em; inicia_em <= n - m; inicia_em++) {
             // achou a primeira letra da palavra
             if (b[inicia_em] == a[0]) {
                 // vai percorrendo a palavra para testar se é igual, mas se não for, o looping do texto vai testar de novo a letra seguinte
                 // pode acontecer da palavra ser "BAB" e no texto ter "BBBAB"
-                for (int i = 0; m - 1; i++) {
+                for (int i = 0; i < m; i++) {
                     // Se a letra não estiver certa
-                    if (b[inicia_em] != '\0') {  // checar se a palavra não acabou
-                        if (b[inicia_em] != a[i]) {
-                            // letra está certa, ver se terminou
-                        } else if (i == m - 1)
-                            return true;
-                    }
-                    inicia_em++;
+                    if (b[inicia_em] != '\0') {      // se ainda tem texto
+                        if (b[inicia_em] == a[i]) {  // se esta acompanhando a palavra
+                            if (i == m - 1)          // se a palavra terminou
+                                return true;         // encontrou ocorrencia
+                            else                     // palavra e texto não terminaram
+                                inicia_em++;         // Seguir conferindo
+                        } else
+                            break;  // ainda tem texto mas a ocorrencia da letra não corresponde na palavra
+                    } else
+                        break;  // texto acabou
                 }
             }
         }
 
         // terminou o texto e não achou
         return false;
-    }
-
-    return false;
+    } else
+        return false;  // texto nao existe
 }
 
 // Funcao que calcula a quantidade de ocorrencias de 'a' em 'b'.
