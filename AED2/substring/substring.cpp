@@ -12,38 +12,29 @@ int inicia_em = 0;
 // b                Vetor com o texto que inicia em 'inicia_em' (b[inicia_em..m+inicia_em-1])
 // n                Tamanho de 'b' (texto)
 // pos_ult_carac    Posição do texto b[pos_ult_carac+inicia_em-1] alinhado com a última letra da palavra (a[m+inicia_em-1])
-// RETORNO  Verdadeiro se exisitr a ocorrêncai da palavra 'a' no texto 'b' na posição 'pos_ult_carac'. Falso caso contrário.
-bool verifica_ocorrencia(char *a, int m, char *b, int n, int pos_ult_carac) {
-    // criar um laço para o texto e se acertar a primeira letra criar um laço para a palavra
-    // verificar se o texto não acabou***
+// RETORNO  Verdadeiro se existir a ocorrência da palavra 'a' no texto 'b' na posição 'pos_ult_carac'. Falso caso contrário.
 
-    if (n > 0) {  // se o texto existe
-        // percorre o texto
-        for (inicia_em; inicia_em <= n - m; inicia_em++) {
-            // achou a primeira letra da palavra
-            if (b[inicia_em] == a[0]) {
-                // vai percorrendo a palavra para testar se é igual, mas se não for, o looping do texto vai testar de novo a letra seguinte
-                // pode acontecer da palavra ser "BAB" e no texto ter "BBBAB"
-                for (int i = 0; i < m; i++) {
-                    // Se a letra não estiver certa
-                    if (b[inicia_em] != '\0') {      // se ainda tem texto
-                        if (b[inicia_em] == a[i]) {  // se esta acompanhando a palavra
-                            if (i == m - 1)          // se a palavra terminou
-                                return true;         // encontrou ocorrencia
-                            else                     // palavra e texto não terminaram
-                                inicia_em++;         // Seguir conferindo
-                        } else
-                            break;  // ainda tem texto mas a ocorrencia da letra não corresponde na palavra
-                    } else
-                        break;  // texto acabou
-                }
-            }
+bool verifica_ocorrencia(char *a, int m, char *b, int n, int pos_ult_carac) {
+    // Confere se a palavra e o texto existem
+    if (n > 0 && m > 0) {
+        // Calcula a posição inicial do texto alinhado pelo último caractere da palavra
+        int inicio_alinhado = pos_ult_carac - m + 1; // pos_ult_carac - (m-1)
+
+        // Confere se a posição atual e valida: Se está dentro do vetor, nem negativo e nem maior que a palavra n
+        if (inicio_alinhado < 0 || inicio_alinhado + m > n) {
+            return false;  // Posição inicial inválida
         }
 
-        // terminou o texto e não achou
-        return false;
+        // Confere se e uma ocorrência da palavra
+        for (int i = 0; i < m; i++) {
+            // A partir da referencia inicio_alinhado anda a palavra com auxilio de i
+            if (a[i] != b[inicio_alinhado + i]) {
+                return false;  // Letras não correspondem, a palavra não ocorre no texto
+            }
+        }
+        return true;  // Palavra correspondeu
     } else
-        return false;  // texto nao existe
+        return false;  // Texto ou palavra não existe
 }
 
 // Funcao que calcula a quantidade de ocorrencias de 'a' em 'b'.
