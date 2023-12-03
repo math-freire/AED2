@@ -18,7 +18,7 @@ bool verifica_ocorrencia(char *a, int m, char *b, int n, int pos_ult_carac) {
     // Confere se a palavra e o texto existem
     if (n > 0 && m > 0) {
         // Calcula a posição inicial do texto alinhado pelo último caractere da palavra
-        int inicio_alinhado = pos_ult_carac - m + 1; // pos_ult_carac - (m-1)
+        int inicio_alinhado = pos_ult_carac - m + 1;  // pos_ult_carac - (m-1)
 
         // Confere se a posição atual e valida: Se está dentro do vetor, nem negativo e nem maior que a palavra n
         if (inicio_alinhado < 0 || inicio_alinhado + m > n) {
@@ -44,8 +44,14 @@ bool verifica_ocorrencia(char *a, int m, char *b, int n, int pos_ult_carac) {
 // n                Tamanho de 'b' (texto)
 // RETORNO  Quantidade de ocorrências de a em b.
 int ocorrencias(char *a, int m, char *b, int n) {
-    // IMPLEMENTAR !!!
-    return 0;
+    // para cada vez que achar o ultimo caracter da palavra, chamar a função de verificar como se fosse último caracter
+    int contagem_de_ocorrencias = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (verifica_ocorrencia(a, m, b, n, i))  // se tiver uma palavra ali, somar 1 no contador
+            contagem_de_ocorrencias++;
+    }
+    return contagem_de_ocorrencias;
 }
 
 // Funcao que retorna a posicao do primeiro caractere de 'a' em 'b' durante a primeira ocorrecnai de 'a'.
