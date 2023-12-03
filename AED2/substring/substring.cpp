@@ -61,13 +61,18 @@ int primeira_ocorrencia(char *a, int m, char *b, int n) {
 }
 
 // Funcao que retorna a posicao do primeiro caractere de 'a' em 'b' durante a ultima ocorrecnai de 'a'.
-// a                Vetor com a palavra que inicia em 'inicia_em' (a[inicia_em..m+inicia_em-1])
-// m                Tamanho de 'a' (palavra)
-// b                Vetor com o texto que inicia em 'inicia_em' (b[inicia_em..m+inicia_em-1])
-// n                Tamanho de 'b' (texto)
 // RETORNO  A posicao do primeiro caractere da palavra 'a' em 'b' iniciado em 'inicia_em'. Caso nao houver ocorrencias, retornar -1.
 int ultima_ocorrencia(char *a, int m, char *b, int n) {
-    // IMPLEMENTAR !!!
+    int qtd_ocorrencias = ocorrencias(a, m, b, n);
+    int contador_de_ocorrencias = 0;
+
+    for (int posicao_atual = inicia_em; posicao_atual < n; posicao_atual++) {
+        if (verifica_ocorrencia(a, m, b, n, posicao_atual)) {  // se for uma ocorrência, então está no último caracter
+            contador_de_ocorrencias++;
+            if (contador_de_ocorrencias == qtd_ocorrencias && qtd_ocorrencias != 0)
+                return posicao_atual - m + 1;
+        }
+    }
     return -1;
 }
 
