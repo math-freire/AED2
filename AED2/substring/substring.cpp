@@ -1,5 +1,4 @@
 // #include "substring.h"  // typedef unsigned char *bytes;
-
 // #include "main.h"
 
 // Use 0 se o vetor a e b (palavra e texto) inicia em 0 (a[0..m-1] e b[0..n-1])
@@ -38,10 +37,6 @@ bool verifica_ocorrencia(char *a, int m, char *b, int n, int pos_ult_carac) {
 }
 
 // Funcao que calcula a quantidade de ocorrencias de 'a' em 'b'.
-// a                Vetor com a palavra que inicia em 'inicia_em' (a[inicia_em..m+inicia_em-1])
-// m                Tamanho de 'a' (palavra)
-// b                Vetor com o texto que inicia em 'inicia_em' (b[inicia_em..m+inicia_em-1])
-// n                Tamanho de 'b' (texto)
 // RETORNO  Quantidade de ocorrências de a em b.
 int ocorrencias(char *a, int m, char *b, int n) {
     // para cada vez que achar o ultimo caracter da palavra, chamar a função de verificar como se fosse último caracter
@@ -54,14 +49,14 @@ int ocorrencias(char *a, int m, char *b, int n) {
     return contagem_de_ocorrencias;
 }
 
-// Funcao que retorna a posicao do primeiro caractere de 'a' em 'b' durante a primeira ocorrecnai de 'a'.
-// a                Vetor com a palavra que inicia em 'inicia_em' (a[inicia_em..m+inicia_em-1])
-// m                Tamanho de 'a' (palavra)
-// b                Vetor com o texto que inicia em 'inicia_em' (b[inicia_em..m+inicia_em-1])
-// n                Tamanho de 'b' (texto)
+// Funcao que retorna a posição do primeiro caracter de 'a' em 'b' durante a primeira ocorrência de 'a'.
 // RETORNO  A posicao do primeiro caractere da palavra 'a' em 'b' iniciado em 'inicia_em'. Caso nao houver ocorrencias, retornar -1.
 int primeira_ocorrencia(char *a, int m, char *b, int n) {
-    // IMPLEMENTAR !!!
+    for (int posicao_atual = inicia_em; posicao_atual < n; posicao_atual++) {
+        if (verifica_ocorrencia(a, m, b, n, posicao_atual)) {  // se for uma ocorrência, então está no último caracter
+            return posicao_atual - m + 1;
+        }
+    }
     return -1;
 }
 
