@@ -76,7 +76,8 @@ int ultima_ocorrencia(char *a, int m, char *b, int n) {
     return -1;
 }
 
-// Funcao que constroi o vetor 'ultimo', ja alocado com o tamanho 'tamanho_alfabeto', contendo a posicao da ultima ocorrencia do respectivo caractere na palavra 'a'.
+// Funcao que constroi o vetor 'ultimo', ja alocado com o tamanho 'tamanho_alfabeto', contendo a posicao da ultima
+// ocorrencia do respectivo caractere na palavra 'a'.
 // a                Vetor com a palavra que inicia em 'inicia_em' (a[inicia_em..m+inicia_em-1])
 // m                Tamanho de 'a' (palavra)
 // ultimo           Vetor tipo inteiro dos indice de cada caractere contendo a ultimoa ocorrencia em 'a'.
@@ -85,9 +86,6 @@ int ultima_ocorrencia(char *a, int m, char *b, int n) {
 //                    Obs.3: O primeiro caractere tem a posicao 1, iniciado da esquerda para a direita.
 // tamanho_alfabeto Tamanho do alfabeto e, consequentemente, o tamanho do vetor 'ultimo'.
 void caractere_errado(char *a, int m, int *ultimo, int tamanho_alfabeto) {
-    // IMPLEMENTAR !!!
-    // Zerar 'ultimo' (jah alocado)
-    // Preencher 'ultimo' com a ocorrencia do ultimo caractere em 'a'
 }
 
 // Funcao que constroi o vetor 'jump', ja alocado com o tamanho 'm' da palavra 'a', contendo o ultimo sufixo da palavra 'a'.
