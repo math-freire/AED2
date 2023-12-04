@@ -9,8 +9,28 @@
 // --- CONSIDERE QUE O VETOOR JA TEM UM TAMANHO SUFICIENTEMENTE GRANDE PARA A INSERCAO
 
 void MaxHeapify(tipoChave A[], int i) {
-    // IMPLEMENTAR
+    // Função que ordena o vetor heap para que tenha ordenação de árvores binárias
     // OBS.: O indice i vai de 1 ate A[0]
+
+    int e = 2 * i;      // filho esquerdo
+    int d = 2 * i + 1;  // filho direito
+
+    int maior;
+
+    if (e <= A[0] && A[e] > A[i])
+        maior = e;
+    else
+        maior = i;
+
+    if (d <= A[0] && A[d] > A[maior])
+        maior = d;
+
+    if (maior != i) {
+        int temp = A[i];
+        A[i] = A[maior];
+        A[maior] = temp;
+        MaxHeapify(A, maior);
+    }
 }
 
 void BuildMaxHeap(tipoChave A[]) {
