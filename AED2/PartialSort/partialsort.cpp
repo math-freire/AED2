@@ -26,9 +26,10 @@ void MinHeapify(int A[], int m, int i) {
 }
 
 void BuildMinHeap(int A[], int n) {
-    // IMPLEMENTAR
-    // DICA: Igual ao BuildMaxHeap, mas chama o MinHeapify
+    for (int i = A[0] / 2; i >= 1; i--)
+        MinHeapify(A, n, i);
 }
+
 void PartialHeapSortInverse(int A[], int n, int k) {
     // IMPLEMENTAR
     // IMPORTANTE: Considere que o A[0] contem o tamanho da lista, e os elementos estao nas posicoes de 1 ate n (inclusive)
