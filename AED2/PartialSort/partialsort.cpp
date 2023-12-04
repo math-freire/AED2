@@ -31,12 +31,22 @@ void BuildMinHeap(int A[], int n) {
 }
 
 void PartialHeapSortInverse(int A[], int n, int k) {
-    // IMPLEMENTAR
     // IMPORTANTE: Considere que o A[0] contem o tamanho da lista, e os elementos estao nas posicoes de 1 ate n (inclusive)
     // DICA: Construa o MinHeap e insira os menores elementos no fim da lista (muito similar ao HeapSort, mas com os menores elementos)
     //       Lembre-se de parar com k elementos!
     //       A LISTA FICARA INVERTIDA, ou seja, o menor elemento eh o ultimo, depois o penultimo... e assim por diante...
+
+    BuildMinHeap(A, A[0]);
+
+    for (int i = n; i > n - k; i--) {
+        int temp = A[1];
+        A[1] = A[i];
+        A[i] = temp;
+
+        MinHeapify(A, i - 1, 1);  // Mantém as propriedades de MinHeap para os elementos restantes
+    }
 }
+
 void PartialHeapSort(int A[], int n, int k) {
     // IMPLEMENTAR
     // IMPORTANTE: Diferente das funcoes anteriores, os elementos comecam na posicao 0, e a saida nao sera invertida
