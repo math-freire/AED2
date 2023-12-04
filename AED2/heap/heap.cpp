@@ -17,25 +17,30 @@ void MaxHeapify(tipoChave A[], int i) {
 
     int maior;
 
+    // se existe elemento esquerdo e se o elemento esquerdo for maior que o elemento do meio
     if (e <= A[0] && A[e] > A[i])
         maior = e;
     else
         maior = i;
 
+    // se existe elemento direito e se o elemento direito for maior que o atual maior (que pode ser o do meio ou da esquerda)
     if (d <= A[0] && A[d] > A[maior])
         maior = d;
 
+    // Caso o maior tenha sido alterado, reordenar o vetor (consequentemente a árvore)
     if (maior != i) {
         int temp = A[i];
         A[i] = A[maior];
         A[maior] = temp;
-        MaxHeapify(A, maior);
+        MaxHeapify(A, maior);  // recursivamente até ficar corrigido
     }
 }
 
 void BuildMaxHeap(tipoChave A[]) {
-    // IMPLEMENTAR
+    // Rearranjar uma árvore inteira para que seja um max-Heap
     // OBS.: Chamar a funcao MaxHeapify
+    for (int i = A[0] / 2; i >= 1; i--)
+        MaxHeapify(A, i);
 }
 
 void HeapSort(tipoChave A[]) {
