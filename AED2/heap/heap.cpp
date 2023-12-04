@@ -38,7 +38,7 @@ void MaxHeapify(tipoChave A[], int i) {
 
 void BuildMaxHeap(tipoChave A[]) {
     // Rearranjar uma árvore inteira para que seja um max-Heap
-    // OBS.: Chamar a funcao MaxHeapify
+
     for (int i = A[0] / 2; i >= 1; i--)
         MaxHeapify(A, i);
 }
@@ -48,6 +48,20 @@ void HeapSort(tipoChave A[]) {
     // DICA: Como a funcao MaxHeapify nao tem o argumento tamanho (como nos slides),
     //       armazene o tamanho atual (t = A[0]), decremente A[0] antes de chamar
     //       MaxHeapify, entao restaure o valor A[0] = t no final.
+
+    BuildMaxHeap(A);
+    int tamanho = A[0];
+
+    for (int i = A[0]; i >= 2; i--) {
+        int temp = A[1];
+        A[1] = A[i];
+        A[i] = temp;
+
+        A[0] -= 1;
+        MaxHeapify(A, 1);  // as duas subárvores são maxheaps, então essa função ordena o maior valor
+        // na primeira posição, desconsiderando o último que é o maior do vetor que estamos ordenando
+    }
+    A[0] = tamanho;
 }
 
 tipoChave HeapMaximum(tipoChave A[]) {
