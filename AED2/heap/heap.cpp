@@ -81,11 +81,26 @@ tipoChave HeapExtractMax(tipoChave A[]) {
 }
 
 void HeapIncreaseKey(tipoChave A[], int i, tipoChave key) {
-    // IMPLEMENTAR
     // OBS.: Nao precisa tratar o caso da chave alterada for menor que a chave atual!
+
+    if (key < A[i]) {
+        // Não precisa tratar o caso em que a nova chave é menor que a chave atual
+        return;
+    }
+
+    A[i] = key;
+
+    while (i > 1 && A[i / 2] < A[i]) {  // i/2 é o pai de i
+        tipoChave temp = A[i];
+        A[i] = A[i / 2];
+        A[i / 2] = temp;
+
+        i = i / 2;
+    }
 }
 
 void MaxHeapInsert(tipoChave A[], tipoChave key) {
-    // IMPLEMENTAR
-    // OBS.: Nao esquecer de aumentar a quantidade de elementos, ou seja, A[0]++
+    A[0]++;
+    A[A[0]] = -999;
+    HeapIncreaseKey(A, A[0], key);
 }
