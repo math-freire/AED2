@@ -69,9 +69,15 @@ tipoChave HeapMaximum(tipoChave A[]) {
 }
 
 tipoChave HeapExtractMax(tipoChave A[]) {
-    // IMPLEMENTAR
-    // OBS.: Nao precisa tratar o caso do vetor vazio!
-    return 0;
+    if (A[0] < 1)
+        return 0;
+
+    int maximo = A[1];
+    A[1] = A[A[0]];
+    A[0] = A[0] - 1;
+    MaxHeapify(A, 1);
+
+    return maximo;
 }
 
 void HeapIncreaseKey(tipoChave A[], int i, tipoChave key) {
