@@ -65,9 +65,7 @@ void HeapSort(tipoChave A[]) {
 }
 
 tipoChave HeapMaximum(tipoChave A[]) {
-    // IMPLEMENTAR
-    // OBS.: Nao esqueca que o primeiro elemento eh o A[1]
-    return 0;
+    return A[1]; // sempre chamado em cima de um heap de maximo (BuildMaxHeap)
 }
 
 tipoChave HeapExtractMax(tipoChave A[]) {
