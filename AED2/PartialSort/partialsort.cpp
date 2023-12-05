@@ -1,4 +1,7 @@
 // #include "partialsort.h"
+#include <stdio.h>
+
+#include <iostream>
 
 void MinHeapify(int A[], int m, int i) {
     int e = 2 * i;      // filho esquerdo
@@ -47,23 +50,50 @@ void PartialHeapSortInverse(int A[], int n, int k) {
     }
 }
 
+// IMPORTANTE: Diferente das funcoes anteriores, os elementos comecam na posicao 0, e a saida nao sera invertida
+// DICA: 1) Crie um novo array com tamanho n+1
+//       2) Copie todos os elementos deslocado em um para o novo array
+//       3) Chame o PartialHeapSortInverse
+//       4) Copie novamente os elementso para o array original, invertendo a ordem e iniciando na posicao 0
 void PartialHeapSort(int A[], int n, int k) {
-    // IMPORTANTE: Diferente das funcoes anteriores, os elementos comecam na posicao 0, e a saida nao sera invertida
-    // DICA: 1) Crie um novo array com tamanho n+1
-    //       2) Copie todos os elementos deslocado em um para o novo array
-    //       3) Chame o PartialHeapSortInverse
-    //       4) Copie novamente os elementos para o array original, invertendo a ordem e iniciando na posicao 0
-
+    // 1) Crie um novo array com tamanho n+1
     int novo_vetor[n + 1];
 
-    for (int i = 0; i < n + 1; i++)
+    // 2) Copie todos os elementos deslocados em um para o novo array
+    for (int i = 0; i < n; i++)
         novo_vetor[i + 1] = A[i];
 
+    // 3) Chame o PartialHeapSortInverse no novo array
     PartialHeapSortInverse(novo_vetor, n + 1, k);
 
-    int contador_decrescente = n + 1;
-    for (int i = 0; i < n + 1; i++) {
-        A[i] = novo_vetor[contador_decrescente];
-        contador_decrescente--;
+    // 4) Copie novamente os elementos para o array original, invertendo a ordem e iniciando na posição 0
+
+    int count = n + 1;
+    for (int i = 0; i < n; i++) {
+        A[i] = novo_vetor[count--];
     }
+}
+
+int main() {
+    const int size = 20;
+    int A[size + 1] = {size, 7, 16, 3, 2, 14, 11, 10, 15, 5, 19, 4, 12, 17, 18, 8, 1, 13, 6, 20, 9};
+    int k = 3;
+
+    std::cout << "--- Input ---\n";
+    std::cout << "HEAPSORT " << size << " " << k << "\n";
+    for (int i = 1; i <= size; i++) {
+        std::cout << A[i] << " ";
+    }
+
+    PartialHeapSort(A, size, k);
+
+    std::cout << "\n\n--- Program output ---\n";
+    for (int i = 1; i <= size; i++) {
+        std::cout << A[i] << " ";
+    }
+
+    std::cout << "\n\n--- Expected output (exact text)---\n";
+    std::cout << "1 2 3 16 15 20 18 17 12 14 19 7 13 10 11 9 6 8 5 4\n";
+
+    return 0;
 }
