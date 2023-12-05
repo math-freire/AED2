@@ -18,11 +18,41 @@ void criarAlfabeto(char *texto, int tamanho_texto, char *alfabeto[], int *freque
     //          frequencia:{ 3 ,  1 ,  1 ,  1 ,  1 ,  1 ,  2 ,  1 ,  1 ,  2 ,  2 ,  1 ,  1  }
     //          tamanho:   13
     // DICA:
+
     //  - Crie uma variavel caracteres tipo vetor de inteiro com tamanho 255 (tipos maximos de caractere), com todos valores em zero
+    char caracteres[255];
+    int freq[255];
+    for (int i = 0; i < 255; i++) {
+        caracteres[i] = 0;
+        freq[i] = 0;
+    }
+
     //  - Faca um laco percorrendo todo o texto, incrementando este vetor em cada ocorrencia de caractere
     //  - Aproveite o mesmo laco para calcular a variavel de saida tamanho (tipos distintos de caracteres presente no texto)
+    *tamanho = 0;
+    for (int i = 0; i < tamanho_texto; i++) {
+        if (caracteres[texto[i]] != texto[i]) {
+            caracteres[texto[i]] = texto[i];
+            (*tamanho)++;
+        }
+        freq[texto[i]]++;
+    }
+
     //  - Alocar as variaveis de saida alfabeto e frequencia
+    for (int i = 0; i < *tamanho; i++) {
+        alfabeto[i] = (char *)malloc(2 * sizeof(char));
+        frequencia[i] = (int *)malloc(sizeof(int));
+    }
+
     //  - Percorra todos os caracteres em um novo laco e insira no alfabeto e frequencia o caractere e a quantidade de ocorrencias respectivamente
+    int posicao = 0;
+    for (int i = 0; i < 255; i++) {
+        if (caracteres[texto[i]] != 0) {
+            alfabeto[posicao][0] = caracteres[i];
+            *frequencia[posicao] = freq[i];
+            posicao++;
+        }
+    }
 }
 
 struct MinHeapNode *buildHuffmanTree(char alfabeto[], int frequencia[], int tamanho) {
