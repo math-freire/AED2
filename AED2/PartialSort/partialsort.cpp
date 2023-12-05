@@ -48,10 +48,22 @@ void PartialHeapSortInverse(int A[], int n, int k) {
 }
 
 void PartialHeapSort(int A[], int n, int k) {
-    // IMPLEMENTAR
     // IMPORTANTE: Diferente das funcoes anteriores, os elementos comecam na posicao 0, e a saida nao sera invertida
     // DICA: 1) Crie um novo array com tamanho n+1
     //       2) Copie todos os elementos deslocado em um para o novo array
     //       3) Chame o PartialHeapSortInverse
-    //       4) Copie novamente os elementso para o array original, invertendo a ordem e iniciando na posicao 0
+    //       4) Copie novamente os elementos para o array original, invertendo a ordem e iniciando na posicao 0
+
+    int novo_vetor[n + 1];
+
+    for (int i = 0; i < n + 1; i++)
+        novo_vetor[i + 1] = A[i];
+
+    PartialHeapSortInverse(novo_vetor, n + 1, k);
+
+    int contador_decrescente = n + 1;
+    for (int i = 0; i < n + 1; i++) {
+        A[i] = novo_vetor[contador_decrescente];
+        contador_decrescente--;
+    }
 }

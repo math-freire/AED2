@@ -100,7 +100,6 @@ void caractere_errado(char *a, int m, int *ultimo, int tamanho_alfabeto) {
 // m                Tamanho de 'a' (palavra)
 // jump           Vetor tipo inteiro que contem a ocorrencia do sufixo na propria palavra 'a'.
 void sufixo_correto(char *a, int m, int *jump) {
-    // Preencher 'jump' (ja alocado) com as ocorrencias de sufixos
 }
 
 // Funcao que retorna o salto calculado atraves da tecnica caractere errado.
@@ -127,10 +126,10 @@ int salto_caractere_errado(char *a, int m, char *b, int n, int *ultimo, int tama
 // jump             Vetor tipo inteiro que contem a ocorrencia do sufixo na propria palavra 'a'.
 // posicao_atual    Posicao atual do texto 'b' que inicia em 'inicia_em'.
 // RETORNO  Valor do salto.
-int salto_sufixo_correto(char *a, int m, char *b, int n, int* jump, int posicao_atual) {
+int salto_sufixo_correto(char *a, int m, char *b, int n, int *jump, int posicao_atual) {
     int i = 0;
     while (a[m - i] == b[posicao_atual - i] && i < m) {
-        i++; 
+        i++;
     }
     if (i == 0) {
         return 1;
