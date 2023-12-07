@@ -197,8 +197,11 @@ void apagar(tipoHash h, char c[STR_SIZE]) {
 
         case aberto:
             // DICA: Nao esquecer de atribuir true para excluido. Caso contrario, uma chave podera ser localizada.
-            h.tabela.aberto[idx].chave[0] = '\0';
-            h.tabela.aberto[idx].excluido = true;
+            if (!h.tabela.aberto[idx].excluido && h.tabela.aberto[idx].chave[0] != '\0') {
+                // Marca a célula como excluída
+                h.tabela.aberto[idx].chave[0] = h.tabela.aberto[idx].valor[0] = '\0';
+                h.tabela.aberto[idx].excluido = true;
+            }
             break;
     }
 }
