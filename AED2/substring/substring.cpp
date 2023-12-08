@@ -142,17 +142,14 @@ int salto_caractere_errado(char *a, int m, char *b, int n, int *ultimo, int tama
 // posicao_atual    Posicao atual do texto 'b' que inicia em 'inicia_em'.
 // RETORNO  Valor do salto.
 int salto_sufixo_correto(char *a, int m, char *b, int n, int *jump, int posicao_atual) {
-    // int i = 0;
-    // while (a[m - i] == b[posicao_atual - i] && i < m) {
-    //     i++;
-    // }
-    // if (i == 0) {
-    //     return 1;
-    // }
+    int i = 0;
+    while (a[m + inicia_em - 1 - i] == b[posicao_atual - i] && i < m)
+        i++;
 
-    // return m - jump[m - i + 1];
+    if (i == 0)
+        return 1;
 
-    return 0;
+    return salto_caractere_errado(a, m, b, n, jump, m, posicao_atual) - 1;
 }
 
 // Funcao que retorna o salto calculado atraves das tecnicas caractere errado e sufixo correto.
