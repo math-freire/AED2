@@ -140,26 +140,14 @@ char *buscar(tipoHash h, char c[STR_SIZE]) {
             return NULL;
 
         case aberto:
-            // Utilizando encadeamento aberto linear
             for (int tentativa = 0; tentativa < h.tamanho; tentativa++) {
                 idx = hash(c, h.tamanho, tentativa);
-
-                // Verifica se a célula contém a chave desejada
-                if (strcmp(h.tabela.aberto[idx].chave, c) == 0 && !h.tabela.aberto[idx].excluido) {
-                    // Chave encontrada, retorna o valor correspondente
+                if (h.tabela.aberto[idx].excluido == false && h.tabela.aberto[idx].chave[0] == '\0')
+                    break;
+                if (strcmp(h.tabela.aberto[idx].chave, c) == 0)
                     return h.tabela.aberto[idx].valor;
-                }
-
-                // Verifica se a célula está vazia (chave[0] == '\0')
-                if (h.tabela.aberto[idx].chave[0] == '\0') {
-                    // Chave não encontrada, retorna nulo
-                    return NULL;
-                }
             }
-            // Chave não encontrada após percorrer toda a tabela
-            return NULL;
     }
-    // Retorna nulo caso o modo não seja aberto
     return NULL;
 }
 
@@ -197,17 +185,16 @@ void apagar(tipoHash h, char c[STR_SIZE]) {
 
         case aberto:
             // DICA: Nao esquecer de atribuir true para excluido. Caso contrario, uma chave podera ser localizada.
-        for(int tentativa = 0; tentativa < h.tamanho; tentativa++){
-            idx = hash(c, h.tamanho, tentativa);
-            if(h.tabela.aberto[idx].excluido == true && h.tabela.aberto[idx].chave[0] == '\0')
-                break;
-            if(strcmp(h.tabela.aberto[idx].chave, c) == 0)
-                h.tabela.aberto[idx].chave[0] = h.tabela.aberto[idx].valor[0] = '\0';
-        }
-        break;
+            for (int tentativa = 0; tentativa < h.tamanho; tentativa++) {
+                idx = hash(c, h.tamanho, tentativa);
+                if (h.tabela.aberto[idx].excluido == true && h.tabela.aberto[idx].chave[0] == '\0')
+                    break;
+                if (strcmp(h.tabela.aberto[idx].chave, c) == 0)
+                    h.tabela.aberto[idx].chave[0] = h.tabela.aberto[idx].valor[0] = '\0';
+            }
+            break;
     }
 }
-
 
 int quantidade(tipoHash h) {
     int qtd = 0;
