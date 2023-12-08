@@ -197,14 +197,17 @@ void apagar(tipoHash h, char c[STR_SIZE]) {
 
         case aberto:
             // DICA: Nao esquecer de atribuir true para excluido. Caso contrario, uma chave podera ser localizada.
-            if (!h.tabela.aberto[idx].excluido && h.tabela.aberto[idx].chave[0] != '\0') {
-                // Marca a célula como excluída
+        for(int tentativa = 0; tentativa < h.tamanho; tentativa++){
+            idx = hash(c, h.tamanho, tentativa);
+            if(h.tabela.aberto[idx].excluido == true && h.tabela.aberto[idx].chave[0] == '\0')
+                break;
+            if(strcmp(h.tabela.aberto[idx].chave, c) == 0)
                 h.tabela.aberto[idx].chave[0] = h.tabela.aberto[idx].valor[0] = '\0';
-                h.tabela.aberto[idx].excluido = true;
-            }
-            break;
+        }
+        break;
     }
 }
+
 
 int quantidade(tipoHash h) {
     int qtd = 0;
