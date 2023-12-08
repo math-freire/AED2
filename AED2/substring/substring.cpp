@@ -127,7 +127,7 @@ void sufixo_correto(char *a, int m, int *jump) {
 // posicao_atual    Posicao atual do texto 'b' que inicia em 'inicia_em'.
 // RETORNO  Valor do salto.
 int salto_caractere_errado(char *a, int m, char *b, int n, int *ultimo, int tamanho_alfabeto, int posicao_atual) {
-    if (posicao_atual == n) {
+    if (posicao_atual == n - 1) {
         return 1;
     }
     return m - ultimo[b[posicao_atual + 1]] + 1;
@@ -163,10 +163,21 @@ int salto_sufixo_correto(char *a, int m, char *b, int n, int *jump, int posicao_
 // posicao_atual    Posicao atual do texto 'b' que inicia em 'inicia_em'.
 // RETORNO  Valor do melhor salto entre as duas tecnicas caractere errado e sufixo correto.
 int melhor_salto_na_posicao(char *a, int m, char *b, int n, int *ultimo, int tamanho_alfabeto, int *jump, int posicao_atual) {
-    // IMPLEMENTAR !!!
-    // Eh preciso utilizar as funcoes salto_caractere_errado e salto_sufixo_correto
-    // Retornar o maior salto
-    return 1;
+    int i = 0;
+    while (a[m + inicia_em - 1 - i] == b[posicao_atual - i] && i < m)
+        i++;
+
+    if (i == 0) {
+        int s1 = salto_caractere_errado(a, m, b, n, jump, m, posicao_atual);
+        int s2 = salto_sufixo_correto(a, m, b, n, jump, posicao_atual);
+
+        return (s1 > s2) ? s1 : s2;
+    }
+
+    int s1 = salto_caractere_errado(a, m, b, n, jump, m, posicao_atual) - 1;
+    int s2 = salto_sufixo_correto(a, m, b, n, jump, posicao_atual);
+
+    return (s1 > s2) ? s1 : s2;
 }
 
 // Funcao que conta ocorrencias da palavra 'a' no texto 'b' utilizando o algoritmo de Boyer-Moore.
@@ -181,5 +192,43 @@ int melhor_salto_na_posicao(char *a, int m, char *b, int n, int *ultimo, int tam
 int boyer_moore(char *a, int m, char *b, int n, int *ultimo, int tamanho_alfabeto, int *jump) {
     // IMPLEMENTAR !!!
     // Eh preciso utilizar a funcao melhor_salto_na_posicao
+    return 0;
+}
+
+#include <iostream>
+
+int main() {
+    char a[] = "xabcabcabc";
+    char b[] = "abcabcxabcabcxabcabcdefghijabcabcxabcabcabcabcxabcx";
+
+    int m = 9;
+    int n = 55;  // Tamanho de b
+    int tamanho_alfabeto = 256;  // Supondo um alfabeto ASCII
+
+    int ultimo[tamanho_alfabeto];
+    for (int i = 0; i < tamanho_alfabeto; ++i) {
+        ultimo[i] = -1;  // Inicializando com -1 para indicar que ainda não ocorreu
+    }
+
+    // Calcula o vetor 'ultimo' para a função salto_caractere_errado
+    for (int i = m - 1; i >= 0; --i) {
+        ultimo[a[i]] = i;
+    }
+
+    // Aloca e calcula o vetor 'jump' para a função salto_sufixo_correto
+    int jump[m + 1];
+    sufixo_correto(a, m, jump);
+
+    // Teste de exemplo
+    int posicao_teste = 50;
+
+    int salto_caractere_errado_resultado = salto_caractere_errado(a, m, b, n, ultimo, tamanho_alfabeto, posicao_teste - 1);
+    int salto_sufixo_correto_resultado = salto_sufixo_correto(a, m, b, n, jump, posicao_teste - 1);
+    int melhor_salto_resultado = melhor_salto_na_posicao(a, m, b, n, ultimo, tamanho_alfabeto, jump, posicao_teste - 1);
+
+    std::cout << "Salto usando CaractereErrado em b[" << posicao_teste << "]: " << salto_caractere_errado_resultado << std::endl;
+    std::cout << "Salto usando SufixoCorreto em b[" << posicao_teste << "]: " << salto_sufixo_correto_resultado << std::endl;
+    std::cout << "Melhor salto em b[" << posicao_teste << "]: " << melhor_salto_resultado << std::endl;
+
     return 0;
 }
